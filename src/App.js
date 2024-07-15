@@ -8,7 +8,12 @@ const App = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('${process.env.REACT_APP_API_URL}');
+        const apiUrl = process.env.REACT_APP_API_URL;
+        if (!apiUrl) {
+          throw new Error("API URL is not defined in environment variables");
+        }
+        console.log('Fetching users from:', apiUrl);
+        const response = await axios.get(`${apiUrl}/`);
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -21,7 +26,12 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('${process.env.REACT_APP_API_URL}, { username }');
+      const apiUrl = process.env.REACT_APP_API_URL;
+      if (!apiUrl) {
+        throw new Error("API URL is not defined in environment variables");
+      }
+      console.log('Submitting to:', apiUrl);
+      await axios.post(`${apiUrl}/`, { username });
       setUsers([...users, { username }]);
       setUsername("");
     } catch (error) {
@@ -58,4 +68,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App;
